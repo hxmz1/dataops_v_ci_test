@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 from pipeline.transform import clean_orders, revenue_by_country
-from pipeline.validate import DataQualityError, check_schema
+from pipeline.validate import DataQualityError, check_reject_rate, check_schema
 def make_orders(rows):
     """Build a small orders table. Each row only gives the columns it wants to
     change."""
@@ -84,4 +84,12 @@ def test_unknown_country_is_rejected():
     assert list(clean["order_id"]) == [2]
     assert list(rejected["reject_reason"]) == ["unknown_country"]
 
+
+def test_check_reject_rate_allows_up_to_twenty_percent():
+    check_reject_rate(5, 1)
+
+
+def test_check_reject_rate_rejects_more_than_twenty_percent():
+    with pytest.raises(DataQualityError):
+        check_reject_rate(5, 2)
 

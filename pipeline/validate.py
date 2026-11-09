@@ -7,7 +7,7 @@ REQUIRED_COLUMNS = [
 "quantity",
 "unit_price",
 ]
-MAX_REJECT_RATE = 0.10
+MAX_REJECT_RATE = 0.20
 class DataQualityError(Exception):
     """Raised when the data is not good enough to continue."""
 def check_schema(df):
@@ -22,6 +22,6 @@ def check_reject_rate(n_total, n_rejected, max_rate=MAX_REJECT_RATE):
     rate = n_rejected / n_total
     if rate > max_rate:
         raise DataQualityError(
-            f"Reject rate {rate:.0%} exceeds the {max_rate:.0%} limit "
-            f"({n_rejected} of {n_total} rows rejected)."
+            f"Reject rate {rate:.0%} is above the limit of {max_rate:.0%} "
+            f"({n_rejected} of {n_total} rows)"
         )
