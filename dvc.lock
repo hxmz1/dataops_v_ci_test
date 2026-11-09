@@ -1,0 +1,55 @@
+schema: '2.0'
+stages:
+  report:
+    cmd: python run_pipeline.py data/raw/orders_day1.csv
+    deps:
+    - path: data/raw
+      hash: md5
+      md5: e991b72cba7ae15ff215d69e53bb5955.dir
+      size: 2359
+      nfiles: 3
+    - path: pipeline
+      hash: md5
+      md5: f9c29f95ef22cefa90c9be9999b4f822.dir
+      size: 9261
+      nfiles: 8
+    - path: run_pipeline.py
+      hash: md5
+      md5: 8d7e615ae2ee07a727805e561b0c135c
+      size: 1299
+    outs:
+    - path: data/output/revenue_by_country.csv
+      hash: md5
+      md5: 6206f700d0ec07024fda48e213cdbd49
+      size: 93
+  elt:
+    cmd: python load_raw.py data/raw/orders_day1.csv && dbt build
+    deps:
+    - path: data/raw
+      hash: md5
+      md5: e991b72cba7ae15ff215d69e53bb5955.dir
+      size: 2359
+      nfiles: 3
+    - path: data_tests
+      hash: md5
+      md5: d664b467dc1acb17c48f47823e63b8d0.dir
+      size: 409
+      nfiles: 2
+    - path: dbt_project.yml
+      hash: md5
+      md5: 2ea5d3b288547ba9037229f8e594ffa5
+      size: 245
+    - path: load_raw.py
+      hash: md5
+      md5: 153128079de427a1dbbf630bfe904b8e
+      size: 1083
+    - path: models
+      hash: md5
+      md5: 5e1b317d3b335942dfc19bfee175a233.dir
+      size: 4517
+      nfiles: 8
+    outs:
+    - path: warehouse.duckdb
+      hash: md5
+      md5: 23a52601680b81a9fb882e9ea0370c95
+      size: 1323008
