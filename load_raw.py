@@ -1,5 +1,6 @@
 
 import sys
+
 import duckdb
 
 WAREHOUSE = "warehouse.duckdb"

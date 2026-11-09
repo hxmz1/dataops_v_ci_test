@@ -1,5 +1,6 @@
 from pathlib import Path
-from sys import path
+
+
 def write_csv(df, path):
     """Load: write a table to a CSV file."""
     path = Path(path)

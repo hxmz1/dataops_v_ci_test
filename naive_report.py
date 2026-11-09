@@ -1,5 +1,7 @@
 import sys
+
 import pandas as pd
+
 path = sys.argv[1]
 df = pd.read_csv(path)
 df["revenue"] = df["quantity"] * df["unit_price"]

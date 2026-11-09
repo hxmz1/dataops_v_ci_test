@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  pull_request:
+    paths-ignore: ["**.md"]
+  push:
+    branches: [main]
+    paths-ignore: ["**.md"]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Code tests
+        run: python -m pytest
+      - name: Run the pipeline on day 1
+        run: python run_pipeline.py data/raw/orders_day1.csv
+
+  lint:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install ruff sqlfluff
+      - name: Ruff
+        run: ruff check .
+      - name: SQLFluff
+        run: sqlfluff lint models data_tests
+      - name: Comment the report on the pull request
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python report_md.py > report.md
+          gh pr comment ${{ github.event.pull_request.number }} --body-file report.md --edit-last || gh pr comment ${{ github.event.pull_request.number }} --body-file report.md
