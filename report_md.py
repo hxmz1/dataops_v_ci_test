@@ -3,6 +3,7 @@ from decimal import Decimal
 
 
 def main():
+    """Generate Markdown for CI checks or a supplied revenue total."""
     parser = argparse.ArgumentParser(description="Generate a Markdown quality report.")
     parser.add_argument(
         "revenue",
