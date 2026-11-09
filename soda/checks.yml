@@ -1,0 +1,11 @@
+checks for revenue_by_country:
+  - row_count = 5
+  - missing_count(country) = 0
+  - duplicate_count(country) = 0
+  - min(revenue) > 0
+
+checks for orders_clean:
+  - row_count > 0
+  - invalid_count(country) = 0:
+      valid values: [France, Germany, Italy, Morocco, Tunisia]
+  - missing_count(customer_id) = 0

@@ -1,0 +1,4 @@
+data_source shop:
+  type: duckdb
+  path: soda/warehouse-soda.duckdb
+  read_only: true
